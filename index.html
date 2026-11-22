@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5fb">
+  <meta name="description" content="Moodify — a sample playlist for every mood.">
+  <title>Moodify — Your mood. Your music.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="galaxy.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <section class="auth-screen" aria-labelledby="auth-title">
+    <input class="auth-mode" type="radio" name="auth-mode" id="auth-login" checked>
+    <input class="auth-mode" type="radio" name="auth-mode" id="auth-signup">
+
+    <div class="auth-card">
+      <a class="auth-brand" href="#auth-title" aria-label="Moodify">🎧 <span>moodi<b>fy</b></span></a>
+      <p class="auth-eyebrow">MUSIC THAT MOVES WITH YOU</p>
+      <h1 id="auth-title">Find your sound.</h1>
+      <p class="auth-subtitle">Your music, ready to play.</p>
+
+      <div class="auth-options" aria-label="Choose how to continue">
+        <label for="auth-login">🔐 Log in</label>
+        <label for="auth-signup">✍️ Create account</label>
+        <a href="#home">🎵 Guest</a>
+      </div>
+
+      <p class="auth-message" id="auth-message" role="alert" aria-live="polite" hidden></p>
+
+      <form class="auth-form login-form" id="login-form" aria-label="Log in" novalidate>
+        <label for="login-email">Email address</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" maxlength="254" required placeholder="you@example.com">
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Your password">
+        <button class="auth-submit" type="submit">Log in <span>→</span></button>
+        <p class="auth-switch">New to Moodify? <label for="auth-signup">Create an account</label></p>
+      </form>
+
+      <form class="auth-form signup-form" id="signup-form" aria-label="Create an account" novalidate>
+        <label for="signup-name">Your name</label>
+        <input id="signup-name" name="name" type="text" autocomplete="name" minlength="2" maxlength="50" required placeholder="How should we call you?">
+        <label for="signup-email">Email address</label>
+        <input id="signup-email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com">
+        <label for="signup-password">Create a password</label>
+        <input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="At least 8 characters">
+        <label for="signup-confirm">Confirm password</label>
+        <input id="signup-confirm" name="confirm" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Type your password again">
+        <button class="auth-submit" type="submit">Create account <span>→</span></button>
+        <p class="auth-switch">Already have an account? <label for="auth-login">Log in</label></p>
+      </form>
+
+      <p class="auth-note">Your account is saved in this browser on this device.</p>
+    </div>
+    <a class="guest-link" href="#home">Just here to listen? <span>Continue as a guest ↗</span></a>
+  </section>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#home"><b>🎧</b> moodi<span>fy</span></a>
+      <small class="label">MENU</small>
+      <nav aria-label="Main navigation">
+        <a class="active" href="#home">🏠 Home</a>
+        <a href="#discover">⌕ Discover</a>
+        <a href="#library">♫ Top artist</a>
+        <a href="#daily-mix">▤ Playlist</a>
+      </nav>
+      <small class="label playlist-label">YOUR PLAYLISTS <span aria-hidden="true">＋</span></small>
+      <nav class="playlists" aria-label="Playlists">
+        <a href="#daily-mix"><i class="dot purple"></i>Daily Mix 01</a>
+        <a href="#daily-mix"><i class="dot pink"></i>Late night drive</a>
+        <a href="#daily-mix"><i class="dot orange"></i>Soft mornings</a>
+        <a href="#daily-mix"><i class="dot blue"></i>Focus flow</a>
+      </nav>
+      <article class="upgrade">
+        <small>MOODIFY PLUS</small>
+        <h3>Music without limits.</h3>
+        <p>Go ad-free and hear every detail.</p>
+        <a href="#daily-mix">Browse music <span>↗</span></a>
+      </article>
+      <button class="profile" id="signout" type="button" aria-label="Sign out">
+        <b>🎧</b>
+        <div><strong>Guest listener</strong><small>Free account</small></div>
+        <span aria-hidden="true">⋯</span>
+      </button>
+    </aside>
+
+    <main id="home">
+      <header>
+        <a class="mobile-brand" href="#home">🎧 <b>moodify</b></a>
+        <nav class="top-nav" aria-label="Main navigation">
+          <a href="#discover">Discover</a>
+          <a href="#library">Top artist</a>
+          <a href="#daily-mix">Playlist</a>
+        </nav>
+        <label class="search">
+          <span>⌕</span>
+          <input id="music-search" type="search" placeholder="Search by song, artist, or mood..." aria-label="Search songs by title, artist, or mood">
+        </label>
+        <div class="actions">
+          <a href="#daily-mix" aria-label="Notifications">♧</a>
+          <button class="avatar" type="button" id="signout-mobile" aria-label="Sign out">♫</button>
+        </div>
+      </header>
+
+      <section class="welcome">
+        <div>
+          <small class="label">YOUR PERSONAL SOUNDTRACK</small>
+          <h1>Hi, <span id="welcome-name">music lover</span> <span>♫</span></h1>
+          <p>Find a mood, then find your next favorite.</p>
+        </div>
+        <div class="daily-badge">✦ MADE FOR YOUR MOMENT</div>
+      </section>
+
+      <section class="section mood-section" id="mood-picker" aria-labelledby="mood-title">
+        <div class="mood-heading">
+          <div>
+            <small class="label">SET THE FEELING</small>
+            <h2 id="mood-title">What mood are you in?</h2>
+            <p>Pick a vibe to tune your sample playlist.</p>
+          </div>
+          <span class="mood-current" id="mood-current" aria-live="polite">ALL MOODS</span>
+        </div>
+        <div class="mood-options" id="mood-options" role="group" aria-label="Filter songs by mood"></div>
+      </section>
+
+      <section class="discovery-card" aria-labelledby="discovery-title">
+        <div class="discovery-orbit" aria-hidden="true"><span>♫</span></div>
+        <div class="discovery-copy">
+          <small class="label">A LITTLE MUSICAL SERENDIPITY</small>
+          <h2 id="discovery-title">Your next little discovery</h2>
+          <p id="discovery-mood">A sample track picked just for your vibe.</p>
+        </div>
+        <div class="discovery-track" aria-live="polite">
+          <strong id="discovery-track-title">Finding a track...</strong>
+          <span id="discovery-track-artist"></span>
+        </div>
+        <div class="discovery-actions">
+          <button class="surprise-button" id="surprise-track" type="button">⤨ Surprise me</button>
+          <button class="discovery-select" id="display-discovery" type="button">Show in player <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <section class="hero" id="discover">
+        <div class="hero-copy">
+          <small>YOUR DAILY SOUNDTRACK</small>
+          <h2>Find your<br><em>frequency.</em></h2>
+          <p>A little collection of sample songs for every kind of moment.</p>
+          <div class="meta">16 HAND-PICKED SAMPLES · DISPLAY ONLY</div>
+          <a class="primary" href="#daily-mix">♫ View playlist</a>
+        </div>
+        <div class="hero-art" aria-label="Decorative music artwork" role="img">
+          <div class="album-art">
+            <div class="album-art-copy">HEAVEN<br>IN SOUND</div>
+            <a class="art-play" href="#daily-mix" aria-label="View playlist">♫</a>
+          </div>
+        </div>
+        <span class="index">MOODIFY · SAMPLE</span>
+      </section>
+
+      <section class="section" id="library">
+        <div class="heading">
+          <div><small class="label">BASED ON YOUR LIKES & TRACK SELECTIONS</small><h2>Your top artist</h2></div>
+        </div>
+        <div class="artist-card">
+          <div class="artist-icon" aria-hidden="true">♫</div>
+          <div class="artist-copy">
+            <small class="label" id="artist-play-count">YOUR TOP ARTIST</small>
+            <h3 id="top-artist-name">Like or display a song to find your top artist</h3>
+            <p id="top-artist-summary">Your top artist is based on liked songs first, then track selections.</p>
+          </div>
+          <div class="artist-genres" id="top-artist-genres" aria-label="Genres represented by your top artist"></div>
+          <div class="genre-recommendations" id="genre-recommendations" aria-label="Genre recommendations"></div>
+        </div>
+      </section>
+
+      <section class="section" id="daily-mix">
+        <div class="heading">
+          <div><small class="label">YOUR LIBRARY · <span id="catalog-count" role="status">16 songs</span></small><h2>Made for this mood</h2></div>
+          <button class="liked-filter" id="liked-only" type="button" aria-pressed="false">♡ Liked songs</button>
+        </div>
+        <p class="catalog-message" id="catalog-message" role="status" aria-live="polite">Choose a track to show it in your player · sample tracks only.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>TRACK</th><th class="album-col">ALBUM</th><th>MOOD</th><th>LENGTH</th><th></th></tr></thead>
+            <tbody id="catalog-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="lower">
+        <article class="stats">
+          <small class="label">YOUR PLAYLIST</small>
+          <h3>Pick a song to display.</h3>
+          <div class="numbers">
+            <div><b id="liked-count">0</b><small>Liked songs</small></div>
+            <div><b id="tracks-played-count">0</b><small>Tracks displayed</small></div>
+          </div>
+        </article>
+      </section>
+      <footer>Made for every version of you <span>♥</span></footer>
+    </main>
+  </div>
+
+  <div class="player" aria-label="Music player">
+    <div class="now">
+      <div class="mini" aria-hidden="true">♫</div>
+      <div><b id="player-track-title">Choose a track</b><small id="player-track-artist">Sample playlist</small></div>
+      <button class="heart" id="player-like" type="button" aria-label="Like current song" aria-pressed="false" disabled>♡</button>
+    </div>
+    <div class="playback">
+      <small class="player-message" id="player-message" role="status" aria-live="polite">Display only · no audio playback</small>
+      <div class="progress"><span>0:00</span><span class="progress-track"><i></i></span><span id="player-duration">0:00</span></div>
+    </div>
+  </div>
+</body>
+</html>
