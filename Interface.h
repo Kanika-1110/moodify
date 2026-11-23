@@ -2,8 +2,10 @@
 #define INTERFACE_H
 
 #include <string>
-#include "hashingmodule.h"
-#include "Recommendation.h"
+#include <vector>
+#include "HashingModule.h"
+#include "GraphModule.h"
+#include "recommendation.h"
 
 using namespace std;
 
@@ -12,13 +14,19 @@ private:
     HashingModule &library;
     Recommendation recommendation;
     string username;
+    vector<int> likedSongIDs;
+    vector<int> dislikedSongIDs;
 
     bool login();
     void displayHeader();
     void displayMenu();
+    void likeSong();
+    void dislikeSong();
+    void displayLikedSongs() const;
+    void displayDislikedSongs() const;
 
 public:
-    explicit Interface(HashingModule &lib);
+    Interface(HashingModule &lib, GraphModule &graph);
     void run();
 };
 
