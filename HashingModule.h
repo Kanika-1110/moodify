@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// Stores information about each song
+
 struct Song {
     int id;
     string title;
@@ -19,15 +19,14 @@ struct Song {
 
 class HashingModule {
 private:
-    // Hash table: song ID -> Song details
+    
     unordered_map<int, Song> songTable;
 
 public:
-    // Add a song to the music library
     bool addSong(int id, string title,
                  string artist, string mood) {
 
-        // Prevent duplicate song IDs
+      
         if (songTable.find(id) != songTable.end()) {
             cout << "Song ID already exists!\n";
             return false;
@@ -43,12 +42,29 @@ public:
         return true;
     }
 
-    // Check whether a song ID exists
     bool hasSong(int id) const {
         return songTable.find(id) != songTable.end();
     }
 
-    // Retrieve a song using its ID
+    bool hasMood(const Song &song, const string &mood) const {
+        size_t start = 0;
+
+        while (start <= song.mood.size()) {
+            size_t end = song.mood.find(", ", start);
+            if (song.mood.substr(start, end - start) == mood) {
+                return true;
+            }
+
+            if (end == string::npos) {
+                break;
+            }
+            start = end + 2;
+        }
+
+        return false;
+    }
+
+
     bool getSongById(int id, Song &result) const {
         auto it = songTable.find(id);
 
@@ -60,7 +76,7 @@ public:
         return true;
     }
 
-    // Display all songs in sorted ID order
+    
     void displaySongs() const {
         vector<int> ids;
 
@@ -87,14 +103,14 @@ public:
         }
     }
 
-    // Return song IDs matching the selected mood
+  
     vector<int> getMoodSongs(const string &mood) const {
         vector<int> result;
 
         for (const auto &entry : songTable) {
             const Song &s = entry.second;
 
-            if (s.mood == mood) {
+            if (hasMood(s, mood)) {
                 result.push_back(s.id);
             }
         }
@@ -103,7 +119,7 @@ public:
         return result;
     }
 
-    // Return the total number of songs
+   
     size_t getSongCount() const {
         return songTable.size();
     }
