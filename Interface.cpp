@@ -1,13 +1,14 @@
 #include "Interface.h"
+#include <algorithm>
 #include <iostream>
 #include <limits>
 
 using namespace std;
 
-Interface::Interface(HashingModule &lib)
-    : library(lib), recommendation(lib) {}
+Interface::Interface(HashingModule &lib, GraphModule &graph)
+    : library(lib), recommendation(lib, graph) {}
 
-// Login or guest session
+
 bool Interface::login() {
     int choice;
     string password;
@@ -34,7 +35,6 @@ bool Interface::login() {
         cout << "Enter password: ";
         cin >> password;
 
-        // Demo credentials from the original project
         if (username == "music" && password == "1234") {
             cout << "Login successful. Welcome, "
                  << username << "!\n";
@@ -68,8 +68,123 @@ void Interface::displayMenu() {
     cout << "\n1. Discover music by mood\n";
     cout << "2. Explore the music library\n";
     cout << "3. Choose another mood\n";
-    cout << "4. Exit Moodify\n";
+    cout << "4. Like a song\n";
+    cout << "5. Dislike a song\n";
+    cout << "6. View liked songs\n";
+    cout << "7. View disliked songs\n";
+    cout << "8. Exit Moodify\n";
     cout << "Enter your choice: ";
+}
+
+void Interface::likeSong() {
+    if (library.getSongCount() == 0) {
+        cout << "The music library is empty.\n";
+        return;
+    }
+
+    library.displaySongs();
+    cout << "\nEnter the ID of the song to like: ";
+
+    int songID;
+    if (!(cin >> songID)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Please enter a valid song ID.\n";
+        return;
+    }
+
+    Song song;
+    if (!library.getSongById(songID, song)) {
+        cout << "No song has that ID.\n";
+        return;
+    }
+
+    auto liked = find(likedSongIDs.begin(), likedSongIDs.end(), songID);
+    if (liked != likedSongIDs.end()) {
+        cout << "\"" << song.title << "\" is already in your liked songs.\n";
+        return;
+    }
+
+    dislikedSongIDs.erase(
+        remove(dislikedSongIDs.begin(), dislikedSongIDs.end(), songID),
+        dislikedSongIDs.end()
+    );
+    likedSongIDs.push_back(songID);
+    cout << "Liked \"" << song.title << "\" by "
+         << song.artist << ".\n";
+}
+
+void Interface::dislikeSong() {
+    if (library.getSongCount() == 0) {
+        cout << "The music library is empty.\n";
+        return;
+    }
+    library.displaySongs();
+    cout << "\nEnter the ID of the song to dislike: ";
+
+    int songID;
+    if (!(cin >> songID)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Please enter a valid song ID.\n";
+        return;
+    }
+
+    Song song;
+    if (!library.getSongById(songID, song)) {
+        cout << "No song has that ID.\n";
+        return;
+    }
+
+    auto disliked = find(dislikedSongIDs.begin(), dislikedSongIDs.end(), songID);
+    if (disliked != dislikedSongIDs.end()) {
+        cout << "\"" << song.title << "\" is already marked as disliked.\n";
+        return;
+    }
+
+    likedSongIDs.erase(
+        remove(likedSongIDs.begin(), likedSongIDs.end(), songID),
+        likedSongIDs.end()
+    );
+    dislikedSongIDs.push_back(songID);
+    cout << "Marked \"" << song.title << "\" by "
+         << song.artist << " as disliked.\n";
+}
+
+void Interface::displayLikedSongs() const {
+    cout << "\n========== YOUR LIKED SONGS ==========\n";
+    if (likedSongIDs.empty()) {
+        cout << "You haven't liked any songs yet.\n";
+        return;
+    }
+
+    for (int songID : likedSongIDs) {
+        Song song;
+        if (library.getSongById(songID, song)) {
+            cout << "\nID: " << song.id
+                 << "\nTitle: " << song.title
+                 << "\nArtist: " << song.artist
+                 << "\nMood: " << song.mood << "\n";
+        }
+    }
+}
+
+void Interface::displayDislikedSongs() const {
+    cout << "\n========== YOUR DISLIKED SONGS ==========\n";
+    if (dislikedSongIDs.empty()) {
+        cout << "You haven't disliked any songs yet.\n";
+        return;
+    }
+
+    for (int songID : dislikedSongIDs) {
+        Song song;
+        if (library.getSongById(songID, song)) {
+            cout << "\nID: " << song.id
+                 << "\nTitle: " << song.title
+                 << "\nArtist: " << song.artist
+                 << "\nMood: " << song.mood << "\n";
+        }
+    }
 }
 
 void Interface::run() {
@@ -105,6 +220,22 @@ void Interface::run() {
                 break;
 
             case 4:
+                likeSong();
+                break;
+
+            case 5:
+                dislikeSong();
+                break;
+
+            case 6:
+                displayLikedSongs();
+                break;
+
+            case 7:
+                displayDislikedSongs();
+                break;
+
+            case 8:
                 cout << "Thanks for listening with Moodify, "
                      << username << "!\n";
                 break;
@@ -113,5 +244,5 @@ void Interface::run() {
                 cout << "Invalid choice. Please try again.\n";
         }
 
-    } while (choice != 4);
+    } while (choice != 8);
 }
